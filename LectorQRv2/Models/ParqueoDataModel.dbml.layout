@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="ParqueoDataModel">
+  <DataContextMoniker Name="/ParqueoDataModelDataContext" />
+  <nestedChildShapes>
+    <classShape Id="f1ae9406-62b0-4d0e-9bc9-a3664c81f591" absoluteBounds="1.25, 1, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/ParqueoDataModelDataContext/Parqueo" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c149fa11-742c-4dc9-b42e-6282087c0ca5" absoluteBounds="1.2649999999999997, 1.46, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>
