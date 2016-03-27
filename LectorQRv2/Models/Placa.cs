@@ -5,6 +5,8 @@ namespace LectorQRv2.Models
 {
     public class Placa
     {
+        public const string PENDIENTE = "PENDIENTE";
+
         private string _noSerie;
         public string NoSerie { get { return _noSerie; } }
 
