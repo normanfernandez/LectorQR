@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using LectorQRv2.Views;
 
 namespace LectorQRv2
 {

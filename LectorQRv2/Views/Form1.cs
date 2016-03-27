@@ -12,7 +12,7 @@ using BarcodeLib.BarcodeReader;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Reflection;
 
-namespace LectorQRv2
+namespace LectorQRv2.Views
 {
     public partial class Form1 : Form
     {

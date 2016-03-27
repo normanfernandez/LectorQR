@@ -1,4 +1,4 @@
-﻿namespace LectorQRv2
+﻿namespace LectorQRv2.Views
 {
     partial class Form1
     {
