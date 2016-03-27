@@ -6,7 +6,7 @@ namespace LectorQRv2.Models
     public class Placa
     {
         private string _noSerie;
-        public string NoSerie { get { return _noSerie; } set { _noSerie = value; } }
+        public string NoSerie { get { return _noSerie; } }
 
         public Placa(string serie)
         {
