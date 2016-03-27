@@ -10,8 +10,8 @@ namespace LectorQRv2.Models
 
         public Placa(string serie)
         {
-            string fomato = @"[AGLF]\d{6}";
-            Regex regex = new Regex(fomato);
+            string formato = @"^[AGLF]{1}\d{6}";
+            Regex regex = new Regex(formato);
 
             if (regex.IsMatch(serie.ToUpper()))
                 _noSerie = serie.ToUpper();
@@ -22,6 +22,6 @@ namespace LectorQRv2.Models
 
     public class InvalidPlacaException : Exception
     {
-        public InvalidPlacaException() :base("Placa no valida!") {}
+        public InvalidPlacaException() : base("Placa no válida!") {}
     }
 }
