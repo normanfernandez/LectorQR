@@ -1,4 +1,6 @@
-﻿using System;
+﻿// mi progragama principal
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -102,6 +104,8 @@ namespace LectorQRv2.Views
             MessageBox.Show(this, "Se graba la vaina!");
         }
 
+        // codigo para agregar manual la placa y Qr
+
         private void btnCedula1_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtCedula1.Text))
@@ -140,7 +144,7 @@ namespace LectorQRv2.Views
                 MessageBox.Show(this, ipe.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            catch (Core.PlacaNoPendienteException ex)
+            catch (Core.PlacaNoPendienteException ex) // si no hay Qr con placa pendiente no puedo agrega una placa
             {
                 MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
