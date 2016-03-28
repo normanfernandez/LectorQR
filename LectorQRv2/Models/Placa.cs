@@ -12,8 +12,9 @@ namespace LectorQRv2.Models
 
         public Placa(string serie)
         {
-            string formato = @"^[AGLFX]{1}\d{6}";
-            Regex regex = new Regex(formato);
+            //Regla para una placa dominicana
+            string formato = @"^[AGLFX]{1}\d{6}"; // el primer caracter tiene qe ser una de esaas letras
+            Regex regex = new Regex(formato); // objeto que trabaja con expresiones regulares
 
             if (regex.IsMatch(serie.ToUpper()))
                 _noSerie = serie.ToUpper();
@@ -24,6 +25,6 @@ namespace LectorQRv2.Models
 
     public class InvalidPlacaException : Exception
     {
-        public InvalidPlacaException() : base("Placa no válida!") {}
+        public InvalidPlacaException() : base("Placa no válida!") { }
     }
 }
