@@ -33,5 +33,15 @@ namespace LectorQRv2.Properties {
                 return ((string)(this["ParqueoConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=NULLPTR\\SQLEXPRESS;Initial Catalog=Parqueo;Integrated Security=True")]
+        public string NormanConnection {
+            get {
+                return ((string)(this["NormanConnection"]));
+            }
+        }
     }
 }

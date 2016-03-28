@@ -59,6 +59,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\IParqueoFlow.cs" />
+    <Compile Include="Core\ParqueoFlow.cs" />
     <Compile Include="DAO\Repository.cs" />
     <Compile Include="Models\Placa.cs" />
     <Compile Include="Views\Form1.cs">
@@ -138,6 +140,7 @@
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

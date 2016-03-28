@@ -14,6 +14,23 @@ namespace LectorQRv2
         [STAThread]
         static void Main()
         {
+            #region Creación y Acceso de base de datos `Parqueo`
+            string DBConnectionString = Properties.Settings.Default.NormanConnection;
+            Models.ParqueoDataModelDataContext db = new Models.ParqueoDataModelDataContext(DBConnectionString);
+            if (!db.DatabaseExists())
+            {
+                try
+                {
+                    db.CreateDatabase();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Error al acceder a la base de datos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return; //se cierra la aplicación
+                }
+            }
+            #endregion
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());

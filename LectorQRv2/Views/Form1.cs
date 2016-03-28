@@ -23,15 +23,16 @@ namespace LectorQRv2.Views
 
         private FilterInfoCollection Dispositivos;
         private VideoCaptureDevice FuenteDeVideo;
+        private Core.ParqueoFlow ControlParqueo = new Core.ParqueoFlow();
 
         private void Form1_Load(object sender, EventArgs e)
-        {
+        {/*
             Dispositivos = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             foreach (FilterInfo x in Dispositivos) 
             {
                 comboBox1.Items.Add(x.Name);
             }
-            comboBox1.SelectedIndex = 0;
+            comboBox1.SelectedIndex = 0;*/
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -99,6 +100,102 @@ namespace LectorQRv2.Views
             ParqueoDAO.Insert(parqueo);
             ParqueoDAO.SaveAll();
             MessageBox.Show(this, "Se graba la vaina!");
+        }
+
+        private void btnCedula1_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtCedula1.Text))
+            {
+                MessageBox.Show(this, "Campo vacío!");
+                return;
+            }
+
+            try
+            {
+                ControlParqueo.EntradaInsertarQR(txtCedula1.Text);
+            }
+            catch (Core.PlacaPendienteException ex)
+            {
+                MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            MessageBox.Show(this, "Se inserta QR exitosamente");
+        }
+
+        private void btnPlaca1_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtPlaca1.Text))
+            {
+                MessageBox.Show(this, "Campo vacío!");
+                return;
+            }
+
+            try
+            {
+                ControlParqueo.EntradaInsertarPlaca(new Models.Placa(txtPlaca1.Text));
+            }
+            catch (Models.InvalidPlacaException ipe)
+            {
+                MessageBox.Show(this, ipe.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            catch (Core.PlacaNoPendienteException ex)
+            {
+                MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            MessageBox.Show(this, "Se inserta placa exitosamente");
+        }
+
+        private void btnCedula2_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtCedula2.Text))
+            {
+                MessageBox.Show(this, "Campo vacío!");
+                return;
+            }
+
+            if (ControlParqueo.SalidaInsertarQR(txtCedula2.Text).Count == 0)
+            {
+                MessageBox.Show(this, "Ningún parqueo asociado con este QR!");
+                return;
+            }
+
+            MessageBox.Show(this, "Se llaman los registros asociados con el QR exitosamente");
+        }
+
+        private void btnPlaca2_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtPlaca2.Text))
+            {
+                MessageBox.Show(this, "Campo vacío!");
+                return;
+            }
+
+            try
+            {
+                Models.Parqueo p = ControlParqueo.SalidaInsertarPlaca(new Models.Placa(txtPlaca2.Text));
+                if (p == null)
+                {
+                    MessageBox.Show(this, "QR no coincide con la placa!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                ControlParqueo.ConfirmarSalida(p);
+                MessageBox.Show(this, "Salida exitosa!");
+            }
+            catch (Models.InvalidPlacaException ipe)
+            {
+                MessageBox.Show(this, ipe.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
         }
     }
 }

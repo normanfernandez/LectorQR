@@ -36,7 +36,7 @@ namespace LectorQRv2.Models
     #endregion
 		
 		public ParqueoDataModelDataContext() : 
-				base(global::LectorQRv2.Properties.Settings.Default.ParqueoConnectionString, mappingSource)
+				base(global::LectorQRv2.Properties.Settings.Default.NormanConnection, mappingSource)
 		{
 			OnCreated();
 		}
