@@ -7,6 +7,8 @@ namespace LectorQRv2.Core
 {
     public interface IParqueoFlow
     {
+        //Interfaz de cómo debe funcionar el sistema de control de entrada y salida
+
         void EliminarPlacasPendientes();
 
         void EntradaInsertarQR(string QR);

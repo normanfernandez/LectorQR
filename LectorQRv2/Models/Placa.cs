@@ -5,6 +5,8 @@ namespace LectorQRv2.Models
 {
     public class Placa
     {
+        //Clase cuya función primordial es crear una placa válida (dominicana)
+
         public const string PENDIENTE = "PENDIENTE";
 
         private string _noSerie;
@@ -16,6 +18,8 @@ namespace LectorQRv2.Models
             string formato = @"^[AGLFX]{1}\d{6}"; // el primer caracter tiene qe ser una de esaas letras
             Regex regex = new Regex(formato); // objeto que trabaja con expresiones regulares
 
+
+            //Se hace la verificación de la placa
             if (regex.IsMatch(serie.ToUpper()))
                 _noSerie = serie.ToUpper();
             else

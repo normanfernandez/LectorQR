@@ -22,13 +22,20 @@ namespace LectorQRv2.Views
         {
             InitializeComponent();
         }
+        
+        //Se declaran las variables necesarias para el funcionamiento de la aplicación
+        private FilterInfoCollection Dispositivos; //Cámaras
+        private VideoCaptureDevice FuenteDeVideo; //Objeto que maneja la fuente del video
 
-        private FilterInfoCollection Dispositivos;
-        private VideoCaptureDevice FuenteDeVideo;
-        private Core.ParqueoFlow ControlParqueo = new Core.ParqueoFlow();
+        //Objeto el cual es el sistema principal donde se manejan las 
+        //entradas y salidas de vehículos
+        private Core.ParqueoFlow ControlParqueo = new Core.ParqueoFlow(); 
 
         private void Form1_Load(object sender, EventArgs e)
-        {/*
+        {
+            //Se carga en el formulario el listado dde cámaras
+            
+            /* Desactivado para no cargar la cámara en etapa de prueba
             Dispositivos = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             foreach (FilterInfo x in Dispositivos) 
             {
@@ -39,6 +46,7 @@ namespace LectorQRv2.Views
 
         private void button1_Click(object sender, EventArgs e)
         {
+            //Timer que maneja el video para la entrada
             timer1.Enabled = true;
             FuenteDeVideo = new VideoCaptureDevice(Dispositivos[comboBox1.SelectedIndex].MonikerString);
             videoSourcePlayer1.VideoSource = FuenteDeVideo;
@@ -49,9 +57,9 @@ namespace LectorQRv2.Views
 
         private void button2_Click(object sender, EventArgs e)
         {
-            new MATLAB.Execute().run();
-            //timer1.Enabled = false;
-            //videoSourcePlayer1.SignalToStop();
+            //Se apaga el video de la cámara de entrada
+            timer1.Enabled = false;
+            videoSourcePlayer1.SignalToStop();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -82,10 +90,13 @@ namespace LectorQRv2.Views
         {
 
         }
+
         private void SaveQR(String qrcode)
-        { 
+        {
+            //Se guarda el QR en la base de datos para la parte de entrada (En versiones futuras será alterado)
+
             Models.Parqueo parqueo = new Models.Parqueo
-            {
+            {   //Se llena una variable con los datos del parqueo
                 cedula = qrcode,
                 fecha_salida = null,
                 fecha_entrada = DateTime.Now,
@@ -95,10 +106,12 @@ namespace LectorQRv2.Views
             DAO.Repository<Models.Parqueo> ParqueoDAO = new DAO.Repository<Models.Parqueo>();
             if (ParqueoDAO.SelectSingle(p => p.cedula == qrcode && p.placa == "PENDIENTE") != null)
             {
+                //No inserta QR nuevo si hay una placa pendiente
                 MessageBox.Show(this, "Cedula con placa pendiente");
                 return;
             }
 
+            //Se inserta el registro de entrada del QR
             ParqueoDAO.Insert(parqueo);
             ParqueoDAO.SaveAll();
             MessageBox.Show(this, "Se graba la vaina!");
@@ -108,6 +121,9 @@ namespace LectorQRv2.Views
 
         private void btnCedula1_Click(object sender, EventArgs e)
         {
+            //Se inserta QR nuevo en la base de datos 
+            //para la entrada del vehículo(Versión manual)
+
             if (string.IsNullOrEmpty(txtCedula1.Text))
             {
                 MessageBox.Show(this, "Campo vacío!");
@@ -116,6 +132,7 @@ namespace LectorQRv2.Views
 
             try
             {
+                //Se inserta el QR
                 ControlParqueo.EntradaInsertarQR(txtCedula1.Text);
             }
             catch (Core.PlacaPendienteException ex)
@@ -129,6 +146,9 @@ namespace LectorQRv2.Views
 
         private void btnPlaca1_Click(object sender, EventArgs e)
         {
+            //Se inserta placa a QR con placa pendiente en la base de datos 
+            //para la entrada del vehículo(Versión manual)
+
             if (string.IsNullOrEmpty(txtPlaca1.Text))
             {
                 MessageBox.Show(this, "Campo vacío!");
@@ -137,6 +157,7 @@ namespace LectorQRv2.Views
 
             try
             {
+                //Se inserta la placa al sistema
                 ControlParqueo.EntradaInsertarPlaca(new Models.Placa(txtPlaca1.Text));
             }
             catch (Models.InvalidPlacaException ipe)
@@ -155,6 +176,9 @@ namespace LectorQRv2.Views
 
         private void btnCedula2_Click(object sender, EventArgs e)
         {
+            //Se inserta QR para hacer la verificación 
+            //para la salida del vehículo(Versión manual)
+
             if (string.IsNullOrEmpty(txtCedula2.Text))
             {
                 MessageBox.Show(this, "Campo vacío!");
@@ -163,6 +187,8 @@ namespace LectorQRv2.Views
 
             if (ControlParqueo.SalidaInsertarQR(txtCedula2.Text).Count == 0)
             {
+                //Mensaje de error si no hay coincidencia
+
                 MessageBox.Show(this, "Ningún parqueo asociado con este QR!");
                 return;
             }
@@ -172,6 +198,9 @@ namespace LectorQRv2.Views
 
         private void btnPlaca2_Click(object sender, EventArgs e)
         {
+            //Se inserta placa para hacer la verificación 
+            //para la salida del vehículo(Versión manual)
+
             if (string.IsNullOrEmpty(txtPlaca2.Text))
             {
                 MessageBox.Show(this, "Campo vacío!");
@@ -183,11 +212,13 @@ namespace LectorQRv2.Views
                 Models.Parqueo p = ControlParqueo.SalidaInsertarPlaca(new Models.Placa(txtPlaca2.Text));
                 if (p == null)
                 {
+                    //Mensaje de error si no hay coincidencia
+
                     MessageBox.Show(this, "QR no coincide con la placa!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                ControlParqueo.ConfirmarSalida(p);
+                ControlParqueo.ConfirmarSalida(p); //Si se cumple esta sentencia sin tirar excepción, hay una salida exitosa
                 MessageBox.Show(this, "Salida exitosa!");
             }
             catch (Models.InvalidPlacaException ipe)

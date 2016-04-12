@@ -9,8 +9,9 @@ namespace LectorQRv2.Core
 {
     public class ParqueoFlow : IParqueoFlow
     {
-        private Repository<Parqueo> ParqueoDAO = new Repository<Parqueo>();
-        private List<Parqueo> listaParqueoSalida = null;
+        //Atributos de la clase
+        private Repository<Parqueo> ParqueoDAO = new Repository<Parqueo>(); //Objeto de manejo de datos
+        private List<Parqueo> listaParqueoSalida = null; //Lista utilizada para la salida del vehículo
 
         public void EntradaInsertarPlaca(Placa placa)
         {
@@ -25,6 +26,9 @@ namespace LectorQRv2.Core
 
         public void EntradaInsertarQR(string QR)
         {
+            //Primera función a llamar en el ciclo.
+            //Inserta el QR del cliente
+
             if (ParqueoDAO.SelectSingle(p => p.placa == Placa.PENDIENTE ) != null)
                 throw new PlacaPendienteException();
 
@@ -42,6 +46,8 @@ namespace LectorQRv2.Core
 
         public Parqueo SalidaInsertarPlaca(Placa placa)
         {
+            //Función para insertar la placa para la salida
+
             if (listaParqueoSalida == null || listaParqueoSalida.Count == 0)
                 throw new Exception("Registros de salida no llamados");
 
@@ -59,6 +65,7 @@ namespace LectorQRv2.Core
 
         public void ConfirmarSalida(Models.Parqueo parqueo)
         {
+            //Marca la salida del vehículo
             parqueo.fecha_salida = DateTime.Now;
             ParqueoDAO.SaveAll();
             listaParqueoSalida = null;
@@ -66,6 +73,8 @@ namespace LectorQRv2.Core
 
         public void EliminarPlacasPendientes()
         {
+            //Elimina todas las placas pendientes del sistema
+
             List<Parqueo> parqueoList = ParqueoDAO.FindAll(p => p.placa == Placa.PENDIENTE).ToList();
 
             foreach (var parqueo in parqueoList)
@@ -77,11 +86,13 @@ namespace LectorQRv2.Core
 
     public class PlacaPendienteException : Exception
     {
-        public PlacaPendienteException() : base("Existe un parqueo con placa pendiente en la base de datos!") { }
+        //Excepción en caso de que que haya placa pendiente
+        public PlacaPendienteException() : base("Existe un parqueo con placa pendiente en la base de datos!");
     }
 
     public class PlacaNoPendienteException : Exception
     {
+        //Excepción que ocurre si se intenta insertar una placa para la entrada
         public PlacaNoPendienteException() : base("No hay placas pendientes en la base de datos!") { }
     }
 }
